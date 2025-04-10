@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@slack/bolt": "npm:@slack/bolt@^4.2.1"
+  }
+}
