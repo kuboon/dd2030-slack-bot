@@ -1,8 +1,16 @@
 # dd2030 Slack Bot
-https://github.com/slackapi/bolt-js のインスタンスです。
-開発環境として deno を使用し、 deno deploy へデプロイしています。
 
-```
+https://github.com/slackapi/bolt-js のインスタンスです。 開発環境として
+[deno](https://docs.deno.com/runtime/#install-deno) を使用しています。
+devcontainer から起動した場合、 deno はインストール済みです。
+
+`main` ブランチへ push すると、自動的に
+[deno deploy](https://dash.deno.com/projects/dd2030-slack-bot)
+へデプロイされます。
+
+# cheatsheet
+
+```js
 // Listen for an action from a Block Kit element (buttons, select menus, date pickers, etc)
 app.action(actionId, fn);
 
