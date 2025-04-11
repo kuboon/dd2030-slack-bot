@@ -6,7 +6,7 @@ const app = new App({
   token: Deno.env.get("SLACK_BOT_TOKEN"),
 });
 
-/* Add functionality here */
+(await import("./modules/hello.ts")).default(app);
 
 (async () => {
   // Start the app
