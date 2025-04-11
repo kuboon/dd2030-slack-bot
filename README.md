@@ -7,6 +7,7 @@ devcontainer から起動した場合、 deno はインストール済みです�
 `main` ブランチへ push すると、自動的に
 [deno deploy](https://dash.deno.com/projects/dd2030-slack-bot)
 へデプロイされます。
+deno deploy へのアクセス権をご希望の方は dash.deno.com へ一度アクセスしてアカウントを作成した後、 @kuboon へ一報ください。
 
 # cheatsheet
 
@@ -18,10 +19,17 @@ app.action(actionId, fn);
 app.action({ callback_id: callbackId }, fn);
 
 // Listen for slash commands
+// 要 bot config
 app.command(commandName, fn);
 
 // Listen for an event from the Events API
-app.event(eventType, fn);
+// list of events https://api.slack.com/events?filter=Events
+// イベントが来ない場合、 bot の subscription が不足している可能性があります。
+// bot 管理者へ依頼してください。
+app.event("app_mention", async ({ say, context }) => {
+  await say(`Hello <@${context.user}>!`);
+});
+
 
 // Listen for a custom step execution from a workflow
 app.function(callbackId, fn)
