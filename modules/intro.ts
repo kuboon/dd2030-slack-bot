@@ -15,7 +15,7 @@ export function init(app: App) {
         });
         return;
       }
-      await say({blocks: message.blocks!, text: message.text});
+      await say({ blocks: message.blocks!, text: message.text });
     },
   );
 }

@@ -22,5 +22,10 @@ function getAllUsersWithBots() {
 }
 export async function getAllUsers() {
   const users = await getAllUsersWithBots();
-  return users.filter((user) => user.id !== "USLACKBOT" && !user.is_bot && !user.deleted);
+  return users.filter((user) =>
+    user.id !== "USLACKBOT" && !user.is_bot && !user.deleted
+  );
 }
+// todo ユーザーID それぞれに対し https://api.slack.com/methods/users.profile.get を実行すると、
+// profile に設定された github ID が取得できる。
+// 合わせて kv に保存しておく。
