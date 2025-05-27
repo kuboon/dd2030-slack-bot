@@ -1,5 +1,7 @@
 {
   "imports": {
+    "@seratch/slack-web-api-client": "jsr:@seratch/slack-web-api-client@^1.1.5",
     "@slack/bolt": "npm:@slack/bolt@^4.2.1"
-  }
+  },
+  "unstable": ["kv"]
 }

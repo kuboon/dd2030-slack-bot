@@ -1,7 +1,14 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
-    "npm:@slack/bolt@^4.2.1": "4.2.1_@types+express@5.0.1"
+    "jsr:@seratch/slack-web-api-client@^1.1.5": "1.1.5",
+    "npm:@slack/bolt@^4.2.1": "4.2.1_@types+express@5.0.1",
+    "npm:@types/node@*": "22.14.0"
+  },
+  "jsr": {
+    "@seratch/slack-web-api-client@1.1.5": {
+      "integrity": "60cb9ad371e3ed24948463567fc2042591b18ce49d32b51bef65149361ebd8a9"
+    }
   },
   "npm": {
     "@slack/bolt@4.2.1_@types+express@5.0.1": {
@@ -605,7 +612,8 @@
       "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
     },
     "semver@7.7.1": {
-      "integrity": "sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA=="
+      "integrity": "sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==",
+      "bin": true
     },
     "send@1.2.0": {
       "integrity": "sha512-uaW0WwXKpL9blXE2o0bRhoL2EGXIrZxQ2ZQ4mgcfoBxdFmQold+qWsD2jLrfZ0trjKL6vOw0j//eAwcALFjKSw==",
@@ -709,6 +717,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@seratch/slack-web-api-client@^1.1.5",
       "npm:@slack/bolt@^4.2.1"
     ]
   }

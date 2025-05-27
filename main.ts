@@ -1,49 +1,12 @@
-import type { Installation, InstallationStore } from "@slack/bolt";
-import Bolt from "@slack/bolt";
-const { App } = Bolt;
+import { app } from "./lib/bolt.ts";
 
-type Query = { teamId: string | undefined };
-export const installationStore: InstallationStore = {
-  storeInstallation: async (installation: Installation) => {
-    if (installation.team !== undefined) {
-      using kv = await Deno.openKv();
-      await kv.set(
-        ["installations", installation.team.id],
-        installation,
-      );
-      console.log("installation stored", installation);
-      return;
-    }
-    throw new Error("Failed to save installation data to installationStore");
-  },
-  fetchInstallation: async ({ teamId }: Query) => {
-    if (teamId !== undefined) {
-      using kv = await Deno.openKv();
-      return (await kv.get<Installation>(["installations", teamId])).value!;
-    }
-    throw new Error("Failed to fetch installation");
-  },
-  deleteInstallation: async ({ teamId }: Query) => {
-    if (teamId !== undefined) {
-      using kv = await Deno.openKv();
-      await kv.delete(["installations", teamId]);
-      return;
-    }
-    throw new Error("Failed to delete installation");
-  },
-};
-
-const app = new App({
-  signingSecret: Deno.env.get("SLACK_SIGNING_SECRET"),
-  token: Deno.env.get("SLACK_BOT_TOKEN"),
-  installationStore,
+// JST 09:01 に実行。 9時より前だと Date がずれるので念の為。
+Deno.cron("sample cron", "1 0 * * *", async () => {
+  (await import("./crons/countUsers.ts")).run();
 });
 
-(await import("./modules/hello.ts")).default(app);
+(await import("./modules/hello.ts")).init(app);
+(await import("./modules/intro.ts")).init(app);
 
-(async () => {
-  // Start the app
-  await app.start(Deno.env.get("PORT") || 3000);
-
-  console.log("⚡️ Bolt app is running!");
-})();
+await app.start();
+console.log("⚡️ Bolt app is running!");
