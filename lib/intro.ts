@@ -42,7 +42,7 @@ async function getAllMessages(
 }
 
 async function saveMessagesToKv() {
-  const messages = await getAllMessages({ oldest: "1741845340.485519" });
+  const messages = await getAllMessages({ oldest: "1748917492.354679" });
   using kv = await Deno.openKv(Deno.env.get("KV_URL"));
   for (const message of messages) {
     if (!message.user) continue; // Skip messages without a user
