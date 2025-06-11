@@ -5,9 +5,9 @@ type HistoryResponse = Awaited<
 >;
 type Message = NonNullable<HistoryResponse["messages"]>[number];
 
-const introKey = (userId: string) => ["intro", userId];
-const channel = "C08HKET1YG3"; // 1_自己紹介
+export const introKey = (userId: string) => ["intro", userId];
 async function getAllMessages(
+  channel: string,
   opts: { oldest?: string } = {},
 ): Promise<Message[]> {
   const allMessages: Message[] = [];
@@ -42,7 +42,7 @@ async function getAllMessages(
 }
 
 async function saveMessagesToKv() {
-  const messages = await getAllMessages({ oldest: "1748917492.354679" });
+  const messages = await getAllMessages("C08HKET1YG3", { oldest: "1748917492.354679" });
   using kv = await Deno.openKv(Deno.env.get("KV_URL"));
   for (const message of messages) {
     if (!message.user) continue; // Skip messages without a user

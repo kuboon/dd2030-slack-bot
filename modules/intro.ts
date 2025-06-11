@@ -1,7 +1,17 @@
-import { type App, matchMessage } from "../deps.ts";
-import { getIntro } from "../lib/intro.ts";
+import { type App } from "../deps.ts";
+import { getIntro, introKey } from "../lib/intro.ts";
+import { teamSettings } from "../lib/teamSettings.ts";
 
 export function init(app: App) {
+  app.event("message", async ({ event, next }) => {
+    if (event.subtype) return;
+    const channel = teamSettings[event.team!]?.channels?.intro;
+    if (channel === event.channel) await next();
+  }, async ({ event }) => {
+    if (event.subtype) return; // For type narrowing
+    using kv = await Deno.openKv();
+    await kv.set(introKey(event.user), event);
+  });
   app.command("intro", async ({ command, ack, respond }) => {
     await ack();
     const match = command.text.match(/^\s*<@(.+?)>\s*$/);
