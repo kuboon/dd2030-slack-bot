@@ -1,24 +1,23 @@
-import { slackApiClient } from "./apiClient.ts";
+import { type Message, slackApiClientFor } from "./apiClient.ts";
+import { kvStoreForTeam } from "./kvStore.ts";
+import { TeamSetting, TeamSettings } from "./teamSettings.ts";
 
-type HistoryResponse = Awaited<
-  ReturnType<typeof slackApiClient.conversations.history>
->;
-type Message = NonNullable<HistoryResponse["messages"]>[number];
-
-const introKey = (userId: string) => ["intro", userId];
-const channel = "C08HKET1YG3"; // 1_自己紹介
 async function getAllMessages(
+  teamId: string,
+  channel: string,
   opts: { oldest?: string } = {},
 ): Promise<Message[]> {
   const allMessages: Message[] = [];
   let cursor: string | undefined;
   do {
-    const response = await slackApiClient.conversations.history({
-      channel,
-      limit: 100,
-      cursor,
-      ...opts,
-    });
+    const response = await slackApiClientFor(teamId).then((x) =>
+      x.conversations.history({
+        channel,
+        limit: 100,
+        cursor,
+        ...opts,
+      })
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -41,34 +40,26 @@ async function getAllMessages(
   return allMessages;
 }
 
-async function saveMessagesToKv() {
-  const messages = await getAllMessages({ oldest: "1748917492.354679" });
-  using kv = await Deno.openKv(Deno.env.get("KV_URL"));
+async function saveMessagesToKv(teamSetting: TeamSetting) {
+  const kvStore = kvStoreForTeam(teamSetting.teamId).child("intro");
+  const messages = await getAllMessages(
+    teamSetting.teamId,
+    teamSetting.channels.intro,
+    { oldest: "1748917492.354679" },
+  );
   for (const message of messages) {
     if (!message.user) continue; // Skip messages without a user
     if (message.text) {
-      await kv.set(introKey(message.user), message);
+      await kvStore.child(message.user).set(message);
     }
-  }
-}
-
-export async function getIntro(userId: string) {
-  using kv = await Deno.openKv();
-  const result = await kv.get(introKey(userId));
-  if (result.value) {
-    return result.value as Message;
-  } else {
-    return null;
   }
 }
 
 if (import.meta.main) {
   try {
-    await saveMessagesToKv();
+    await saveMessagesToKv(TeamSettings.dd2030);
     console.log("Messages saved to KV successfully.");
   } catch (error) {
     console.error("Error saving messages to KV:", error);
   }
 }
-
-// todo https://api.slack.com/events/channel_history_changed を受信して kv を更新する

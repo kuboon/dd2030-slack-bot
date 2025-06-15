@@ -1,15 +1,13 @@
 import type { Installation, InstallationStore } from "@slack/bolt";
+import { kvStoreForTeam } from "./kvStore.ts";
 
 // dd2030 以外の slack workspace で同時に動作させるのに必要。
 // 現在は使っていない
 
-const keyForTeamId = (teamId: string) => ["installations", teamId];
 export const installationStore: InstallationStore = {
   storeInstallation: async (installation) => {
     if (installation.team !== undefined) {
-      using kv = await Deno.openKv();
-      await kv.set(
-        keyForTeamId(installation.team.id),
+      await kvStoreForTeam(installation.team.id).child("installation").set(
         installation,
       );
       console.log("installation stored", installation);
@@ -19,15 +17,14 @@ export const installationStore: InstallationStore = {
   },
   fetchInstallation: async ({ teamId }) => {
     if (teamId !== undefined) {
-      using kv = await Deno.openKv();
-      return (await kv.get<Installation>(keyForTeamId(teamId))).value!;
+      return (await kvStoreForTeam(teamId).child<Installation>("installation")
+        .get())!;
     }
     throw new Error("Failed to fetch installation");
   },
   deleteInstallation: async ({ teamId }) => {
     if (teamId !== undefined) {
-      using kv = await Deno.openKv();
-      await kv.delete(keyForTeamId(teamId));
+      await kvStoreForTeam(teamId).child("installation").delelte();
       console.log("installation deleted for teamId", teamId);
       return;
     }
