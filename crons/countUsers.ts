@@ -17,6 +17,8 @@ async function runForTeam(teamSetting: TeamSetting) {
   const lastCount = (await kv.child<number>(yesterday).get()) || 0;
   await kv.child(today).set(users.length);
 
+  if(!teamSetting.channels.userStats) return;
+
   const diff = users.length - lastCount;
   if (diff === 0) return;
 
