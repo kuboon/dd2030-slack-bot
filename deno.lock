@@ -1,12 +1,12 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@seratch/slack-web-api-client@^1.1.5": "1.1.5",
+    "jsr:@seratch/slack-web-api-client@^1.1.6": "1.1.6",
     "npm:@slack/bolt@^4.4.0": "4.4.0_@types+express@5.0.2"
   },
   "jsr": {
-    "@seratch/slack-web-api-client@1.1.5": {
-      "integrity": "60cb9ad371e3ed24948463567fc2042591b18ce49d32b51bef65149361ebd8a9"
+    "@seratch/slack-web-api-client@1.1.6": {
+      "integrity": "cc6115038d7492b67005e12beb3f85db6417e632917a5692f69ce7673416a0c0"
     }
   },
   "npm": {
@@ -713,7 +713,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@seratch/slack-web-api-client@^1.1.5",
+      "jsr:@seratch/slack-web-api-client@^1.1.6",
       "npm:@slack/bolt@^4.4.0"
     ]
   }

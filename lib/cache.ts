@@ -17,7 +17,10 @@ export async function cache<T>(
   }
   const value = await getter();
   const dummyResponse = Response.json(value);
-  dummyResponse.headers.append("X-EXPIRE-AT", (Date.now() + CACHE_TTL).toString());
+  dummyResponse.headers.append(
+    "X-EXPIRE-AT",
+    (Date.now() + CACHE_TTL).toString(),
+  );
   await cache.put(dummyRequest, dummyResponse);
   return value;
 }

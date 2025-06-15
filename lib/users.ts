@@ -1,15 +1,15 @@
 import { cache } from "./cache.ts";
-import { slackApiClient } from "./apiClient.ts";
+import { Member, slackApiClientFor } from "./apiClient.ts";
 
-type UsersListResponse = Awaited<ReturnType<typeof slackApiClient.users.list>>;
-type Member = NonNullable<UsersListResponse["members"]>[number];
-function getAllUsersWithBots() {
+function getAllUsersWithBots(teamId: string) {
   return cache("users.list", async () => {
     const allUsers: Member[] = [];
     let cursor: string | undefined;
 
     do {
-      const response = await slackApiClient.users.list({ cursor, limit: 100 });
+      const response = await slackApiClientFor(teamId).then((x) =>
+        x.users.list({ cursor, limit: 100 })
+      );
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.error}`);
       }
@@ -20,8 +20,8 @@ function getAllUsersWithBots() {
     return allUsers;
   });
 }
-export async function getAllUsers() {
-  const users = await getAllUsersWithBots();
+export async function getAllUsers(teamId: string) {
+  const users = await getAllUsersWithBots(teamId);
   return users.filter((user) =>
     user.id !== "USLACKBOT" && !user.is_bot && !user.deleted
   );

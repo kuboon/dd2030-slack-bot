@@ -1,6 +1,9 @@
 {
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read --unstable-kv --allow-sys main.ts"
+  },
   "imports": {
-    "@seratch/slack-web-api-client": "jsr:@seratch/slack-web-api-client@^1.1.5",
+    "@seratch/slack-web-api-client": "jsr:@seratch/slack-web-api-client@^1.1.6",
     "@slack/bolt": "npm:@slack/bolt@^4.4.0"
   },
   "unstable": ["kv"]
