@@ -26,10 +26,11 @@ export const app = new App({
   installationStore,
 });
 
-app.use(({ context, next }) => {
+app.use(async ({ context, next, payload }) => {
   const teamId = context.teamId;
   if (teamId) {
     context.kv = kvStoreForTeam(teamId);
   }
-  return next();
+  console.log(payload);
+  await next();
 });

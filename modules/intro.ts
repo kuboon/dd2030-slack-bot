@@ -3,20 +3,25 @@ import type { Message } from "../lib/apiClient.ts";
 import type { KvStore } from "../lib/kvStore.ts";
 import { getTeamSetting } from "../lib/teamSettings.ts";
 
-export const introKey = (userId: string) => ["intro", userId].join("/");
+export const introKey = (userId: string) => ["intro", userId];
 
 export function init(app: App<{ kv: KvStore }>) {
-  app.event("message", async ({ event, next }) => {
-    if (event.subtype) return;
-    const channel = getTeamSetting(event.team!)?.channels?.intro;
+  app.event("message", async ({ context, event, next }) => {
+    if (event.subtype && event.subtype !== "message_changed") return;
+    const channel = getTeamSetting(context.teamId)?.channels?.intro;
     if (channel === event.channel) await next();
   }, async ({ context, event }) => {
-    if (event.subtype) return; // For type narrowing
-    await context.kv.child(introKey(event.user)).set(event);
+    if (event.subtype === "message_changed" && !event.message.subtype) {
+      const userId = event.message.user;
+      await context.kv.child(...introKey(userId)).set(event.message);
+      return;
+    }
+    if (event.subtype) return;
+    await context.kv.child(...introKey(event.user)).set(event);
   });
-  app.command("intro", async ({ ack, command, context, respond }) => {
+  app.command("/intro", async ({ ack, command, context, respond }) => {
     await ack();
-    const match = command.text.match(/^\s*<@(.+?)>\s*$/);
+    const match = command.text.match(/^\s*<@([^|>]+)(\|(.+))?>\s*$/);
     if (!match || !match[1]) {
       await respond({
         response_type: "ephemeral",
@@ -26,7 +31,8 @@ export function init(app: App<{ kv: KvStore }>) {
       return;
     }
     const userId = match[1];
-    const message = await context.kv.child<Message>(introKey(userId)).get();
+    console.log("intro command for user:", userId);
+    const message = await context.kv.child<Message>(...introKey(userId)).get();
     if (!message) {
       await respond({
         response_type: "ephemeral",

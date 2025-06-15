@@ -3,7 +3,14 @@ import { getAllUsers } from "../lib/users.ts";
 import { kvStoreForTeam } from "../lib/kvStore.ts";
 import { TeamSetting, TeamSettings } from "../lib/teamSettings.ts";
 
-export async function run(teamSetting: TeamSetting) {
+export function run() {
+  return Promise.all(
+    Object.values(TeamSettings).map((teamSetting) =>
+      runForTeam(teamSetting),
+    ),
+  );
+}
+async function runForTeam(teamSetting: TeamSetting) {
   const today = new Date().toISOString().split("T")[0];
   const yesterday =
     new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
@@ -27,7 +34,7 @@ export async function run(teamSetting: TeamSetting) {
 
 if (import.meta.main) {
   try {
-    await run(TeamSettings.dd2030);
+    await run();
     console.log("User count updated successfully.");
   } catch (error) {
     console.error("Error updating user count:", error);

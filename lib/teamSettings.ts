@@ -23,7 +23,7 @@ export const TeamSettings = {
   },
 } satisfies Record<string, TeamSetting>;
 
-export function getTeamSetting(teamId: string): TeamSetting | undefined {
+export function getTeamSetting(teamId: string | undefined): TeamSetting | undefined {
   return Object.values(TeamSettings).find((setting) =>
     setting.teamId === teamId
   );
