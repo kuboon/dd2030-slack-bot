@@ -8,6 +8,8 @@ export const introKey = (userId: string) => ["intro", userId];
 export function init(app: App<{ kv: KvStore }>) {
   app.event("message", async ({ context, event, next }) => {
     if (event.subtype && event.subtype !== "message_changed") return;
+    if (!event.subtype && event.thread_ts) return; // スレッド内のメッセージは無視
+
     const channel = getTeamSetting(context.teamId)?.channels?.intro;
     if (channel === event.channel) await next();
   }, async ({ context, event }) => {
