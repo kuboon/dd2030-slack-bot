@@ -10,15 +10,16 @@ export function run() {
 }
 async function runForTeam(teamSetting: TeamSetting) {
   const today = new Date().toISOString().split("T")[0];
-  const yesterday =
-    new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
   const users = await getAllUsers(teamSetting.teamId);
   const kv = kvStoreForTeam(teamSetting.teamId).child("usersCount");
-  const lastCount = (await kv.child<number>(yesterday).get()) || 0;
   await kv.child(today).set(users.length);
 
-  if(!teamSetting.channels.userStats) return;
+  const channel = teamSetting.channels.userStats;
+  if (!channel) return;
 
+  const yesterday =
+    new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  const lastCount = (await kv.child<number>(yesterday).get()) || 0;
   const diff = users.length - lastCount;
   if (diff === 0) return;
 
@@ -26,10 +27,7 @@ async function runForTeam(teamSetting: TeamSetting) {
     `📊 *${today}* メンバー数: ${users.length}人（前日比: ${diff}人）`;
 
   const slackApiClient = await slackApiClientFor(teamSetting.teamId);
-  await slackApiClient.chat.postMessage({
-    channel: teamSetting.channels.userStats!,
-    text,
-  });
+  await slackApiClient.chat.postMessage({ channel, text });
 }
 
 if (import.meta.main) {
