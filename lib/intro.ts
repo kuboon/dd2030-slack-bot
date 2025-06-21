@@ -9,6 +9,7 @@ async function getAllMessages(
 ): Promise<Message[]> {
   const allMessages: Message[] = [];
   let cursor: string | undefined;
+  using file = await Deno.open("messages.json", { append: true, create: true });
   do {
     const response = await slackApiClientFor(teamId).then((x) =>
       x.conversations.history({
@@ -24,12 +25,16 @@ async function getAllMessages(
         `Failed to fetch conversation history: ${response.error}`,
       );
     }
-
-    allMessages.push(
-      ...response.messages!.filter((msg): msg is Message =>
-        !!msg.text && !!msg.user && !msg.subtype
-      ),
+    const messages = response.messages!.filter(
+      (msg: Message): msg is Message =>
+        !!msg.text && !!msg.user && !msg.subtype,
     );
+    const textEncoder = new TextEncoder();
+    messages.forEach((msg: unknown) => {
+      file.write(textEncoder.encode(JSON.stringify(msg) + "\n"));
+    });
+
+    allMessages.push(...messages);
     cursor = response.response_metadata?.next_cursor;
     console.log(`Fetched ${allMessages.length} messages so far...`);
   } while (cursor);
@@ -45,7 +50,7 @@ async function saveMessagesToKv(teamSetting: TeamSetting) {
   const messages = await getAllMessages(
     teamSetting.teamId,
     teamSetting.channels.intro,
-    { oldest: "1748917492.354679" },
+    // { oldest: "1748917492.354679" },
   );
   for (const message of messages) {
     if (!message.user) continue; // Skip messages without a user
@@ -57,7 +62,7 @@ async function saveMessagesToKv(teamSetting: TeamSetting) {
 
 if (import.meta.main) {
   try {
-    await saveMessagesToKv(TeamSettings.dd2030);
+    await saveMessagesToKv(TeamSettings.mirai);
     console.log("Messages saved to KV successfully.");
   } catch (error) {
     console.error("Error saving messages to KV:", error);
