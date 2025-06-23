@@ -42,10 +42,14 @@ export function init(app: App<{ kv: KvStore }>) {
       });
       return;
     }
+    const textHeader = `<@${userId}>さんの自己紹介`;
     await respond({
       response_type: "ephemeral",
-      blocks: message.blocks!,
-      text: message.text,
+      blocks: [
+        { type: "section", text: { type: "mrkdwn", text: textHeader } },
+        ...message.blocks!,
+      ],
+      text: textHeader + "\n" + message.text,
     });
   });
 }
