@@ -9,6 +9,8 @@ const scopes = [
   "channels:read",
   "chat:write",
   "commands",
+  "files:read",
+  "files:write",
   "links:read",
   "links:write",
   "reactions:read",
