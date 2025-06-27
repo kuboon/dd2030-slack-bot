@@ -27,7 +27,7 @@ async function getAllMessages(
     }
     const messages = response.messages!.filter(
       (msg: Message): msg is Message =>
-        !!msg.text && !!msg.user && !msg.subtype,
+        !!msg.text && !!msg.user && !msg.subtype && !msg.thread_ts,
     );
     const textEncoder = new TextEncoder();
     messages.forEach((msg: unknown) => {
