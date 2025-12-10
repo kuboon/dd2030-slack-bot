@@ -11,6 +11,7 @@ export function init(app: App) {
       event.text: ${event.text}`;
       await say({
         text,
+        thread_ts: event.thread_ts,
         blocks: [
           {
             type: "section",
