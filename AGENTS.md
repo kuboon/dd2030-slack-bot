@@ -1,5 +1,5 @@
 ---
-applyTo: '**/*.{js,ts,jsx,tsx}'
+applyTo: "**/*.{js,ts,jsx,tsx}"
 ---
 
 # Deno 2 Instructions for Copilot
@@ -50,21 +50,14 @@ These are the main points and differences to keep in mind when working with Deno
 - **Configuration:**
   - Uses `deno.json` or `deno.jsonc` for config, not `package.json`.
 
-## Example: Importing npm and URL Modules
-
-```ts
-import express from "npm:express";
-import { serve } from "https://deno.land/std/http/server.ts";
-```
-
 ## Useful Commands
 
-- Run a script: `deno run main.ts`
-- Run with permissions: `deno run --allow-net main.ts`
+- List of defined tasks: `deno task`
+- Run a task: `deno task start`
 - Format code: `deno fmt`
 - Lint code: `deno lint`
 - Test: `deno test`
-- Add npm dependency: `deno add npm:express`
+- Add jsr dependency: `deno add jsr:hono`
 
 ---
 
