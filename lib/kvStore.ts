@@ -1,4 +1,4 @@
-const kv = await Deno.openKv(Deno.env.get("KV_URL"));
+const kv = await Deno.openKv();
 
 export function kvStoreForTeam(teamId: string): KvStore {
   return new DenoKvStore({

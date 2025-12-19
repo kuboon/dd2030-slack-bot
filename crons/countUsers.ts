@@ -5,7 +5,7 @@ import { TeamSetting, TeamSettings } from "../lib/teamSettings.ts";
 
 export function run() {
   return Promise.all(
-    Object.values(TeamSettings).map((teamSetting) => runForTeam(teamSetting)),
+    [runForTeam(TeamSettings.dd2030)],
   );
 }
 async function runForTeam(teamSetting: TeamSetting) {
