@@ -1,6 +1,7 @@
 export type TeamSetting = {
   teamId: string;
   channels: {
+    log: string;
     intro: string;
     userStats?: string;
   };
@@ -10,6 +11,7 @@ export const TeamSettings = {
   dd2030: {
     teamId: "T08FL58DC9K",
     channels: {
+      log: "",
       intro: "C08HKET1YG3",
       userStats: "C08QLT17362", // 8_人数推移
     },
@@ -18,6 +20,7 @@ export const TeamSettings = {
   mirai: {
     teamId: "T08R1043FPY",
     channels: {
+      log: "C091BDYQW3E",
       intro: "C08SF0HARU6",
     },
   },
