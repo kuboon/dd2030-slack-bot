@@ -4,7 +4,7 @@ import { app } from "./lib/bolt.ts";
 let cronCount = 0;
 Deno.cron("countUsers", "5 0 * * *", async () => {
   cronCount++;
-  console.log("running cron: count=", cronCount)
+  console.log("running cron: count=", cronCount);
   await import("./crons/countUsers.ts").then((x) => x.run());
 });
 

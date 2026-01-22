@@ -4,19 +4,21 @@ import { TeamSettings } from "../lib/teamSettings.ts";
 
 const welcomeMessages = {
   [TeamSettings.mirai.teamId]: {
-    "C0A8XMNT6FM": `<@{user}>さん、#サポーター映像部 のチャンネルへ参加いただき、ありがとうございます！こちらの目標は、公式アカウントから投稿される動画や、ファンメイドの動画をたくさん作って投稿していくことです:dart:最初の第一歩として、以下をご確認ください:point_down:
+    "C0A8XMNT6FM":
+      `<@{user}>さん、#サポーター映像部 のチャンネルへ参加いただき、ありがとうございます！こちらの目標は、公式アカウントから投稿される動画や、ファンメイドの動画をたくさん作って投稿していくことです:dart:最初の第一歩として、以下をご確認ください:point_down:
 
     はじめにお読みくださいをご確認ください:eyes:
-    困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`
-
-  }
-}
+    困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`,
+  },
+};
 
 export function init(app: App) {
   app.event("member_joined_channel", async ({ event, context }) => {
     const teamId = context.teamId;
     if (!teamId) return;
-    const messages = welcomeMessages[teamId] as Record<string, string> | undefined;
+    const messages = welcomeMessages[teamId] as
+      | Record<string, string>
+      | undefined;
     if (!messages) return;
     try {
       const channelId = event.channel;
@@ -28,12 +30,15 @@ export function init(app: App) {
 
       const client = await slackApiClientFor(teamId);
 
-      const text = template.replace(/{user}/g, userId).replace(/<@\{user\}>/g, `<@${userId}>`);
+      const text = template.replace(/{user}/g, userId).replace(
+        /<@\{user\}>/g,
+        `<@${userId}>`,
+      );
 
       // Open an IM channel and send a DM
       const imOpen = await client.conversations.open({ users: userId });
       if (!imOpen.ok || !imOpen.channel) return;
-      const dmChannel = imOpen.channel.id;
+      const dmChannel = imOpen.channel.id!;
 
       await client.chat.postMessage({ channel: dmChannel, text });
     } catch (err) {

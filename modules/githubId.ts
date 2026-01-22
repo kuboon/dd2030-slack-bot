@@ -8,7 +8,7 @@ export function init(app: App) {
     matchMessage(/github (.+)/),
     async ({ say, context }) => {
       if (!context.userId) return;
-      const { githubId, userId } = await getUserIdFromGithub(context[0]);
+      const { githubId, userId } = await getUserIdFromGithub(context.teamId!, context[0]);
       const text = userId
         ? `${githubId} は <@${userId}> のGitHub IDです。`
         : `${githubId} の持ち主は不明です。`;
@@ -25,10 +25,10 @@ export function init(app: App) {
   );
 }
 
-async function getUserIdFromGithub(githubIdOrUrl: string) {
+async function getUserIdFromGithub(teamId: string, githubIdOrUrl: string) {
   const githubId = githubIdOrUrl.match(/https:\/\/github\.com\/(.+)/)?.[1] ||
     githubIdOrUrl;
-  const slackUsers = await getAllUsers();
+  const slackUsers = await getAllUsers(teamId);
   const userId = slackUsers.find((user) => user.githubId === githubId)?.id;
   return { githubId, userId };
 }

@@ -29,16 +29,19 @@ export const app = new App({
   installationStore,
   customRoutes: [
     {
-      path: '/',
-      method: ['GET'],
-      handler: (req, res) => {
-        res.writeHead(302, { 'Location': 'https://dd2030-slack-bot.deno.dev/slack/install' });
+      path: "/",
+      method: ["GET"],
+      handler: (_req, res) => {
+        res.writeHead(302, {
+          "Location": "https://dd2030-slack-bot.deno.dev/slack/install",
+        });
         res.end();
       },
     },
+  ],
 });
 
-app.use(async ({ context, next, payload: _, }) => {
+app.use(async ({ context, next, payload: _ }) => {
   const teamId = context.teamId;
   if (teamId) {
     context.kv = kvStoreForTeam(teamId);
