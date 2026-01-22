@@ -5,9 +5,9 @@ import { TeamSettings } from "../lib/teamSettings.ts";
 const welcomeMessages = {
   [TeamSettings.mirai.teamId]: {
     "C0A8XMNT6FM":
-      `<@{user}>さん、#サポーター映像部 のチャンネルへ参加いただき、ありがとうございます！こちらの目標は、公式アカウントから投稿される動画や、ファンメイドの動画をたくさん作って投稿していくことです:dart:最初の第一歩として、以下をご確認ください:point_down:
+      `<@{user}>さん、<#C0A8XMNT6FM>へ参加いただき、ありがとうございます！こちらの目標は、公式アカウントから投稿される動画や、ファンメイドの動画をたくさん作って投稿していくことです:dart:最初の第一歩として、以下をご確認ください:point_down:
 
-    はじめにお読みくださいをご確認ください:eyes:
+    <https://team-mirai-volunteer.slack.com/docs/T08R1043FPY/F0A9478UAR5|はじめにお読みください>をご確認ください:eyes:
     困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`,
   },
 };
