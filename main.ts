@@ -10,6 +10,7 @@ Deno.cron("countUsers", "5 0 * * *", async () => {
 
 await import("./modules/hello.ts").then((x) => x.init(app));
 await import("./modules/intro.ts").then((x) => x.init(app));
+await import("./modules/welcomeChannel.ts").then((x) => x.init(app));
 
 await app.start();
 console.log("⚡️ Bolt app is running!");
