@@ -14,6 +14,7 @@ const welcomeMessages = {
 
 export function init(app: App) {
   app.event("member_joined_channel", async ({ event, context }) => {
+    console.log("member_joined_channel event:", event.user, event.channel);
     const teamId = context.teamId;
     if (!teamId) return;
     const messages = welcomeMessages[teamId] as
