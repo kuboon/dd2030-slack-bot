@@ -14,7 +14,6 @@ const scopes = [
   "im:write",
   "links:read",
   "links:write",
-  "member_joined_channel",
   "reactions:read",
   "users:read",
   "usergroups:read",
@@ -28,13 +27,21 @@ export const app = new App({
   // token: Deno.env.get("SLACK_BOT_TOKEN"),
   scopes,
   installationStore,
+  customRoutes: [
+    {
+      path: '/',
+      method: ['GET'],
+      handler: (req, res) => {
+        res.writeHead(302, { 'Location': 'https://dd2030-slack-bot.deno.dev/slack/install' });
+        res.end();
+      },
+    },
 });
 
-app.use(async ({ context, next, payload }) => {
+app.use(async ({ context, next, payload: _, }) => {
   const teamId = context.teamId;
   if (teamId) {
     context.kv = kvStoreForTeam(teamId);
   }
-  console.log(payload);
   await next();
 });
