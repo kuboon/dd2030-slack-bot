@@ -3,12 +3,22 @@ import { slackApiClientFor } from "../lib/apiClient.ts";
 import { TeamSettings } from "../lib/teamSettings.ts";
 
 const welcomeMessages = {
+  // https://docs.slack.dev/messaging/formatting-message-text
   [TeamSettings.mirai.teamId]: {
+    // サポーター映像部
     "C0A8XMNT6FM":
       `<@{user}>さん、<#C0A8XMNT6FM>へ参加いただき、ありがとうございます！こちらの目標は、公式アカウントから投稿される動画や、ファンメイドの動画をたくさん作って投稿していくことです:dart:最初の第一歩として、以下をご確認ください:point_down:
 
-    <https://team-mirai-volunteer.slack.com/docs/T08R1043FPY/F0A9478UAR5|はじめにお読みください>をご確認ください:eyes:
-    困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`,
+<https://team-mirai-volunteer.slack.com/docs/T08R1043FPY/F0A9478UAR5|はじめにお読みください>をご確認ください:eyes:
+困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`,
+
+    // デザイン_sos
+    "C0A8XTK4XEK": `<#C0A8XTK4XEK> のチャンネルへお越しいただき、ありがとうございます！
+このチャンネルは【各候補予定者】SNS画像のデザインお助けチャンネルです:mag:
+フォーマットの編集ができないチームをお助けするために発足しました！
+ご依頼前に必ず<https://team-mirai-volunteer.slack.com/docs/T08R1043FPY/F0A9AQ1B3M3|「はじめに」>を読んでからご依頼ください:raised_hands:
+＜お願い＞ここはデザインが好きなサポーターさん達の善意の場です。ただの作業員のように扱うのではなく互いにリスペクトのあるコミニケーションを心がけましょう！
+お困りごとは運営広報の<@U0A7WCCQQUX>までご相談ください:woman-raising-hand:`,
   },
 };
 
