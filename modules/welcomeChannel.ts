@@ -13,7 +13,8 @@ const welcomeMessages = {
 困ったらとりあえず <@U0914GXMU8Y> をメンションしてください :raised_hands:（軽い気持ちで頼っていただけると嬉しいです:bangbang:）`,
 
     // デザイン_sos
-    "C0A8XTK4XEK": `<#C0A8XTK4XEK> のチャンネルへお越しいただき、ありがとうございます！
+    "C0A8XTK4XEK":
+      `<#C0A8XTK4XEK> のチャンネルへお越しいただき、ありがとうございます！
 このチャンネルは【各候補予定者】SNS画像のデザインお助けチャンネルです:mag:
 フォーマットの編集ができないチームをお助けするために発足しました！
 ご依頼前に必ず<https://team-mirai-volunteer.slack.com/docs/T08R1043FPY/F0A9AQ1B3M3|「はじめに」>を読んでからご依頼ください:raised_hands:

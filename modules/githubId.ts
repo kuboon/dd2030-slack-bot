@@ -8,7 +8,10 @@ export function init(app: App) {
     matchMessage(/github (.+)/),
     async ({ say, context }) => {
       if (!context.userId) return;
-      const { githubId, userId } = await getUserIdFromGithub(context.teamId!, context[0]);
+      const { githubId, userId } = await getUserIdFromGithub(
+        context.teamId!,
+        context[0],
+      );
       const text = userId
         ? `${githubId} は <@${userId}> のGitHub IDです。`
         : `${githubId} の持ち主は不明です。`;
